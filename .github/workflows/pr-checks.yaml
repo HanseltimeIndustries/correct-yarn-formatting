@@ -1,0 +1,17 @@
+name: PR Checks
+run-name: ${{ github.head_ref }} PR Checks
+
+on:
+  pull_request:
+    branches: [main, alpha]
+
+jobs:
+  call-test-workflow:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/test-flow.yaml
+    with:
+      from: ${{ github.workflow }}
+      templatePrefix: ${{ github.head_ref }}
+    secrets: inherit

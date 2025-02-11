@@ -1,0 +1,32 @@
+name: auto-sync-with-template
+
+on:
+  schedule:
+    # Perform automatic syncs on saturday at 9 am
+    - cron: "0 9 * * 6"
+  # manual trigger
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    environment: auto-sync
+    steps:
+      # Create git client with PAT that has access to the private template
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SYNC_TOKEN }}
+      - name: setup git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: install
+        run: |
+          npm ci
+      - name: sync-repos
+        uses: hanseltimeindustries/template-repo-sync-action@v1.0.1
+        with:
+          repoPath: HanseltimeIndustries/github-actions-template
+          githubToken: ${{ secrets.SYNC_TOKEN }}
+          templateBranch: main
+          commitMsg: "build(boilerplate): synchronize template repo"

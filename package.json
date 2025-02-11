@@ -1,0 +1,43 @@
+{
+	"name": "@hanseltime/correct-yarn-formatting",
+	"version": "1.0.0",
+	"description": "This is a yarn berry plugin for handling the fact that yarn formats package.json unprompted.  Ideally, we can deprecate this if the yarn project stops doing this.",
+	"main": "lib/index.js",
+	"files": ["lib"],
+	"scripts": {
+		"format": "biome format",
+		"lint": "biome lint",
+		"bundle": "ncc build src/action.ts -o bundle",
+		"test": "echo \"Error: no test specified\"",
+		"build": "tsc",
+		"prepare": "husky",
+		"release": "npx semantic-release"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/HanseltimeIndustries/github-actions-template.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "TODO: your repository url/issues"
+	},
+	"homepage": "TODO: your repository url/#readme",
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@commitlint/config-angular": "^19.0.3",
+		"@semantic-release/changelog": "^6.0.3",
+		"@semantic-release/exec": "^6.0.3",
+		"@semantic-release/git": "^10.0.1",
+		"@types/node": "^20.11.24",
+		"@yarnpkg/core": "^4.2.0",
+		"commander": "^12.0.0",
+		"commitlint": "^19.0.3",
+		"husky": "^9.0.11",
+		"semantic-release": "^23.0.2",
+		"semantic-release-major-tag": "^0.3.2",
+		"typescript": "^5.3.3"
+	},
+	"private": true,
+	"packageManager": "yarn@4.6.0+sha512.5383cc12567a95f1d668fbe762dfe0075c595b4bfff433be478dbbe24e05251a8e8c3eb992a986667c1d53b6c3a9c85b8398c35a960587fbd9fa3a0915406728"
+}
