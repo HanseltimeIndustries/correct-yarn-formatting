@@ -1,4 +1,4 @@
-import {
+import type {
 	Plugin,
 	Project,
 	ConfigurationDefinitionMap,
@@ -28,7 +28,7 @@ const configuration: Partial<ConfigurationDefinitionMap> = {
 	correctFormattingLogs: {
 		description:
 			"Can be used to set the verbosity of the plugin's logs.\n debug - shows everything \n notice - only shows a notice when the plugin stops a bad format and links to the feature request\n none - shows nothing",
-		type: SettingsType.STRING,
+		type: "STRING" as SettingsType.STRING,
 		default: "notice",
 	},
 };
