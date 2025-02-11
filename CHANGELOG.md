@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/HanseltimeIndustries/correct-yarn-formatting/compare/v1.0.0...v1.0.1) (2025-02-11)
+
+
+### Bug Fixes
+
+* changing plugin name and using interal requires ([aa4bb97](https://github.com/HanseltimeIndustries/correct-yarn-formatting/commit/aa4bb9793a3b18bb7469b2ab6ada23f2c454d6c2))
+
 # 1.0.0 (2025-02-11)
 
 

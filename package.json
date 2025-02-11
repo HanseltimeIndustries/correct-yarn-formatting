@@ -1,9 +1,11 @@
 {
 	"name": "yarn-plugin-correct-yarn-formatting",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "This is a yarn berry plugin for handling the fact that yarn formats package.json unprompted.  Ideally, we can deprecate this if the yarn project stops doing this.",
 	"main": "lib/index.js",
-	"files": ["lib"],
+	"files": [
+		"lib"
+	],
 	"scripts": {
 		"format": "biome format",
 		"lint": "biome lint",
