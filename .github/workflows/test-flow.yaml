@@ -32,11 +32,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
-          cache-dependency-path: package-lock.json
+          cache: "yarn"
+          cache-dependency-path: yarn.lock
       - name: install
         run: |
-          npm ci
+          yarn install --immutable
       - name: commit-linting
         run: |
           if [[ "${{ github.base_ref }}" != "" ]]; then
@@ -51,17 +51,14 @@ jobs:
           fi
       - name: build
         run: |
-          npm run build
+          yarn build
       - name: linting
         run: |
-          npm run lint
-          npm run format
+          yarn lint
+          yarn format
       - name: testing
         run: |
-          npm run test
-      - name: bundle
-        run: |
-          npm run bundle
+          yarn test
 
   no-committed-build:
     runs-on: ubuntu-latest
