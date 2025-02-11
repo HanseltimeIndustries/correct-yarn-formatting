@@ -39,8 +39,7 @@ You can do that simply by:
 yarn build
 
 # In a new yarn project add this to your .yarnrc.yml
-plugins:
-  - <path to package>/lib/index.js
+yarn plugin import <path to package>/lib/index.js
 ```
 
 Now you can verify it's working as expected!

@@ -327,26 +327,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hanseltime/correct-yarn-formatting@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@hanseltime/correct-yarn-formatting@workspace:."
-  dependencies:
-    "@biomejs/biome": "npm:1.9.4"
-    "@commitlint/config-angular": "npm:^19.0.3"
-    "@semantic-release/changelog": "npm:^6.0.3"
-    "@semantic-release/exec": "npm:^6.0.3"
-    "@semantic-release/git": "npm:^10.0.1"
-    "@types/node": "npm:^20.11.24"
-    "@yarnpkg/core": "npm:^4.2.0"
-    commander: "npm:^12.0.0"
-    commitlint: "npm:^19.0.3"
-    husky: "npm:^9.0.11"
-    semantic-release: "npm:^23.0.2"
-    semantic-release-major-tag: "npm:^0.3.2"
-    typescript: "npm:^5.3.3"
-  languageName: unknown
-  linkType: soft
-
 "@isaacs/cliui@npm:^8.0.2":
   version: 8.0.2
   resolution: "@isaacs/cliui@npm:8.0.2"
@@ -5456,6 +5436,26 @@ __metadata:
   checksum: 10c0/ccd7e723e61ad5965fffbb791366db689572b80cca80e0f96aad968dfff4156cd7cd1ad18607afe1046d8241e6fb2d6c08bf7fa7bfb5eaec818735d8feac8f05
   languageName: node
   linkType: hard
+
+"yarn-plugin-correct-yarn-formatting@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "yarn-plugin-correct-yarn-formatting@workspace:."
+  dependencies:
+    "@biomejs/biome": "npm:1.9.4"
+    "@commitlint/config-angular": "npm:^19.0.3"
+    "@semantic-release/changelog": "npm:^6.0.3"
+    "@semantic-release/exec": "npm:^6.0.3"
+    "@semantic-release/git": "npm:^10.0.1"
+    "@types/node": "npm:^20.11.24"
+    "@yarnpkg/core": "npm:^4.2.0"
+    commander: "npm:^12.0.0"
+    commitlint: "npm:^19.0.3"
+    husky: "npm:^9.0.11"
+    semantic-release: "npm:^23.0.2"
+    semantic-release-major-tag: "npm:^0.3.2"
+    typescript: "npm:^5.3.3"
+  languageName: unknown
+  linkType: soft
 
 "yocto-queue@npm:^1.0.0":
   version: 1.1.1

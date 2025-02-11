@@ -4,8 +4,8 @@ import type {
 	ConfigurationDefinitionMap,
 	SettingsType,
 } from "@yarnpkg/core";
-import { readFileSync, writeFileSync } from "fs";
-import { join } from "path";
+import type * as fs from "fs";
+import type * as path from "path";
 
 export const name = "correct-yarn-formatting";
 
@@ -58,7 +58,9 @@ class Logger {
 	}
 }
 
-export function factory(): Plugin {
+export function factory(_require: <T>(pkg: string) => T): Plugin {
+	const { readFileSync, writeFileSync } = _require<typeof fs>("fs");
+	const { join } = _require<typeof path>("path");
 	const origPkgs: [string, string][] = [];
 	return {
 		configuration,
