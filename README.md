@@ -7,11 +7,10 @@ Works with workspaces and single packages.
 
 ## Usage
 
-Simply add it to your `.yarnrc.yml`
+Import it:
 
-```yaml
-plugins:
-    - TODO
+```shell
+yarn plugin import https://raw.githubusercontent.com/HanseltimeIndustries/correct-yarn-formatting/v1.0.0/heads/main/lib/index.js
 ```
 
 ## Test it out
