@@ -30,6 +30,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ steps.app-token.outputs.token }}
+      - name: corepack
+        run: |
+          corepack enable
       - name: Use Node.js 20.x
         uses: actions/setup-node@v4
         with:
@@ -39,7 +42,6 @@ jobs:
       - name: Install
         run: |
           yarn install --immutable
-          git checkout package.json
       - name: Build
         run: yarn build
       - name: Release
