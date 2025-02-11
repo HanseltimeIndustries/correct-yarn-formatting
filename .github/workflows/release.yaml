@@ -37,7 +37,9 @@ jobs:
           cache: "yarn"
           cache-dependency-path: yarn.lock
       - name: Install
-        run: yarn install --immutable
+        run: |
+          yarn install --immutable
+          git checkout package.json
       - name: Build
         run: yarn build
       - name: Release

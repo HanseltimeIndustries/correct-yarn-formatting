@@ -37,6 +37,7 @@ jobs:
       - name: install
         run: |
           yarn install --immutable
+          git checkout package.json
       - name: commit-linting
         run: |
           if [[ "${{ github.base_ref }}" != "" ]]; then
