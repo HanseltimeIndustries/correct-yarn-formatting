@@ -7,22 +7,21 @@
 	"scripts": {
 		"format": "biome format",
 		"lint": "biome lint",
-		"bundle": "ncc build src/action.ts -o bundle",
-		"test": "echo \"Error: no test specified\"",
+		"test": "echo \"no tests\"",
 		"build": "tsc",
 		"prepare": "husky",
 		"release": "npx semantic-release"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/HanseltimeIndustries/github-actions-template.git"
+		"url": "https://github.com/HanseltimeIndustries/correct-yarn-formatting.git"
 	},
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "TODO: your repository url/issues"
+		"url": "https://github.com/HanseltimeIndustries/correct-yarn-formatting/issues"
 	},
-	"homepage": "TODO: your repository url/#readme",
+	"homepage": "https://github.com/HanseltimeIndustries/correct-yarn-formatting/#readme",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@commitlint/config-angular": "^19.0.3",
