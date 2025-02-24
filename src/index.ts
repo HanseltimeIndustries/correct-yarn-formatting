@@ -5,6 +5,7 @@ import type {
 	SettingsType,
 } from "@yarnpkg/core";
 import type * as fs from "fs";
+import { platform } from "os";
 import type * as path from "path";
 
 export const name = "correct-yarn-formatting";
@@ -58,23 +59,35 @@ class Logger {
 	}
 }
 
+/**
+ * Yarn on windows writes its file paths as unix absolute and this causes problems:
+ *
+ * /D:/a/something/here
+ */
+function resolveCWD(yarnCwd: string) {
+	if (process.platform === "win32") {
+		return yarnCwd.startsWith("/") ? yarnCwd.slice(1) : yarnCwd;
+	}
+	return yarnCwd;
+}
+
 export function factory(_require: <T>(pkg: string) => T): Plugin {
 	const { readFileSync, writeFileSync } = _require<typeof fs>("fs");
-	const { join } = _require<typeof path>("path");
+	const { resolve } = _require<typeof path>("path");
 	const origPkgs: [string, string][] = [];
 	return {
 		configuration,
 		hooks: {
 			validateProject(project: Project) {
 				const logger = new Logger(project);
-				const topPkgJsonPath = join(project.cwd, "package.json");
+				const topPkgJsonPath = resolve(resolveCWD(project.cwd), "package.json");
 				logger.debug(`Reading pre-formatted file: ${topPkgJsonPath}`);
 				origPkgs.push([
 					topPkgJsonPath,
 					readFileSync(topPkgJsonPath).toString(),
 				]);
 				project.workspaces.forEach((w) => {
-					const pkgJsonPath = join(w.cwd, "package.json");
+					const pkgJsonPath = resolve(resolveCWD(w.cwd), "package.json");
 					logger.debug(`Reading pre-formatted file: ${pkgJsonPath}`);
 					origPkgs.push([pkgJsonPath, readFileSync(pkgJsonPath).toString()]);
 				});
