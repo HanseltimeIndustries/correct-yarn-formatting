@@ -58,6 +58,45 @@ jobs:
       - name: testing
         run: |
           yarn test
+  pkgtest:
+    strategy:
+      matrix:
+        node-version: [20.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      # TODO: caching this action would accelerate the run
+      - name: corepack
+        run: |
+          corepack enable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache-dependency-path: yarn.lock
+      - name: install
+        run: |
+          yarn install --immutable
+      - name: commit-linting
+        run: |
+          if [[ "${{ github.base_ref }}" != "" ]]; then
+            echo "Setting up git environment for commitlint of pull request"
+            git fetch origin ${{ github.base_ref }}
+            git fetch ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.head_ref }}
+            npx commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }} --verbose
+          else
+            echo "Setting up git environment for commitlint of branch push"
+            git fetch origin ${{ github.ref_name }} --unshallow
+            npx commitlint --from $(git rev-list --max-parents=0 origin/${{ github.ref_name }})
+          fi
+      - name: build
+        run: |
+          yarn build
+      - name: testing
+        run: |
+          yarn pkgtest
 
   no-committed-build:
     runs-on: ubuntu-latest
