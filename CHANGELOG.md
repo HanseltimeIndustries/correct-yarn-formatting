@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/HanseltimeIndustries/correct-yarn-formatting/compare/v1.0.1...v1.0.2) (2025-02-24)
+
+
+### Bug Fixes
+
+* handle windows path resolution ([5865ebe](https://github.com/HanseltimeIndustries/correct-yarn-formatting/commit/5865ebeea90780dab40237348b01a71aad013e8f))
+
 ## [1.0.1](https://github.com/HanseltimeIndustries/correct-yarn-formatting/compare/v1.0.0...v1.0.1) (2025-02-11)
 
 
