@@ -58,6 +58,31 @@ jobs:
       - name: testing
         run: |
           yarn test
+  pkgtest:
+    strategy:
+      matrix:
+        node-version: [20.x]
+        os: [windows-latest] # [ubuntu-latest, macos-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache-dependency-path: yarn.lock
+      - name: install
+        run: |
+          npm install -g corepack@latest
+          corepack enable
+          yarn install --immutable
+      - name: build
+        run: |
+          yarn build
+      - name: testing
+        run: |
+          yarn pkgtest
 
   no-committed-build:
     runs-on: ubuntu-latest
