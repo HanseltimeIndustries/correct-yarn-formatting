@@ -63,7 +63,7 @@ jobs:
         with:
           path: |
             lib/index.js
-          key: lib
+          key: lib-${{ github.sha }}
 
   inttest:
     needs:
@@ -71,7 +71,7 @@ jobs:
     strategy:
       matrix:
         node-version: [20.x]
-        os: [ubuntu-latest, windows-latest, macos-latest] # [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -86,13 +86,27 @@ jobs:
         with:
           path: |
             lib/index.js
-          key: lib
+          key: lib-${{ github.sha }}
           enableCrossOsArchive: true
       - name: install
         run: |
-          npm install -g corepack@latest
           corepack enable
           yarn install --immutable
+      - id: pkgtest-setup
+        uses: hanseltimeindustries/pkgtest-setup-action@v1
+        # Run pkgtest with a directive to collect logs
+      - name: pkgtest
+        run: |
+          yarn pkgtest --collectLogFilesOn error --collectLogFilesStage setup --onWindowsProblems skip
+        # Collect any logs from the --collectLogFilesOn error to troubleshoot failures
+      - name: Archive logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pkgtest-log-files-${{ matrix.pkgManager }}-${{ matrix.os }}-${{ matrix.node-version }}
+          path: ${{ steps.pkgtest-setup.outputs.collet_log_file_folder }}
+          retention-days: 1
+          include-hidden-files: true
 
   no-committed-build:
     runs-on: ubuntu-latest
