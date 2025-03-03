@@ -10,7 +10,7 @@ Works with workspaces and single packages.
 Import it:
 
 ```shell
-yarn plugin import https://raw.githubusercontent.com/HanseltimeIndustries/correct-yarn-formatting/v1.0.1/lib/index.js
+yarn plugin import https://raw.githubusercontent.com/HanseltimeIndustries/correct-yarn-formatting/v1.0.2/lib/index.js
 ```
 
 You can change to any tag that exists on the repo to get a specific release.
