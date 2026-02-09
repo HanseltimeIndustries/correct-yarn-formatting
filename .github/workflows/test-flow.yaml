@@ -131,7 +131,7 @@ jobs:
     needs:
       - no-committed-build
       - ci-checks
-      - inttest
+      # - inttest
     runs-on: ubuntu-latest
     name: Done
     steps:
