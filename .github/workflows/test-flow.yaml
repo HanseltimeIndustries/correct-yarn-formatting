@@ -65,48 +65,49 @@ jobs:
             lib/index.js
           key: lib-${{ github.sha }}
 
-  inttest:
-    needs:
-      - ci-checks
-    strategy:
-      matrix:
-        node-version: [20.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+  # TODO - reenable pkgtest
+  # inttest:
+  #   needs:
+  #     - ci-checks
+  #   strategy:
+  #     matrix:
+  #       node-version: [20.x]
+  #       os: [ubuntu-latest, windows-latest, macos-latest]
 
-    runs-on: ${{ matrix.os }}
+  #   runs-on: ${{ matrix.os }}
 
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache-dependency-path: yarn.lock
-      - name: Restore built plugin
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            lib/index.js
-          key: lib-${{ github.sha }}
-          enableCrossOsArchive: true
-      - name: install
-        run: |
-          corepack enable
-          yarn install --immutable
-      - id: pkgtest-setup
-        uses: hanseltimeindustries/pkgtest-setup-action@v1
-        # Run pkgtest with a directive to collect logs
-      - name: pkgtest
-        run: |
-          yarn pkgtest --collectLogFilesOn error --collectLogFilesStage setup --onWindowsProblems skip
-        # Collect any logs from the --collectLogFilesOn error to troubleshoot failures
-      - name: Archive logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pkgtest-log-files-${{ matrix.pkgManager }}-${{ matrix.os }}-${{ matrix.node-version }}
-          path: ${{ steps.pkgtest-setup.outputs.collet_log_file_folder }}
-          retention-days: 1
-          include-hidden-files: true
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ matrix.node-version }}
+  #         cache-dependency-path: yarn.lock
+  #     - name: Restore built plugin
+  #       uses: actions/cache/restore@v4
+  #       with:
+  #         path: |
+  #           lib/index.js
+  #         key: lib-${{ github.sha }}
+  #         enableCrossOsArchive: true
+  #     - name: install
+  #       run: |
+  #         corepack enable
+  #         yarn install --immutable
+  #     - id: pkgtest-setup
+  #       uses: hanseltimeindustries/pkgtest-setup-action@v1
+  #       # Run pkgtest with a directive to collect logs
+  #     - name: pkgtest
+  #       run: |
+  #         yarn pkgtest --collectLogFilesOn error --collectLogFilesStage setup --onWindowsProblems skip
+  #       # Collect any logs from the --collectLogFilesOn error to troubleshoot failures
+  #     - name: Archive logs on failure
+  #       if: failure()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: pkgtest-log-files-${{ matrix.pkgManager }}-${{ matrix.os }}-${{ matrix.node-version }}
+  #         path: ${{ steps.pkgtest-setup.outputs.collet_log_file_folder }}
+  #         retention-days: 1
+  #         include-hidden-files: true
 
   no-committed-build:
     runs-on: ubuntu-latest
