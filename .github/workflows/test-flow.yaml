@@ -32,10 +32,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache-dependency-path: yarn.lock
+          cache: "npm"
+          cache-dependency-path: package-lock.json
       - name: install
         run: |
-          yarn install --immutable
+          npm ci
       - name: commit-linting
         run: |
           if [[ "${{ github.base_ref }}" != "" ]]; then
@@ -50,65 +51,19 @@ jobs:
           fi
       - name: build
         run: |
-          yarn build
+          npm run build
       - name: linting
         run: |
-          yarn lint
-          yarn format
+          npm run lint
+          npm run format
       - name: testing
         run: |
-          yarn test
-      - name: Save build
-        uses: actions/cache/save@v4
-        with:
-          path: |
-            lib/index.js
-          key: lib-${{ github.sha }}
-
-  inttest:
-    needs:
-      - ci-checks
-    strategy:
-      matrix:
-        node-version: [20.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache-dependency-path: yarn.lock
-      - name: Restore built plugin
-        uses: actions/cache/restore@v4
-        with:
-          path: |
-            lib/index.js
-          key: lib-${{ github.sha }}
-          enableCrossOsArchive: true
-      - name: install
+          npm run test
+      - name: bundle
         run: |
-          corepack enable
-          yarn install --immutable
-      - id: pkgtest-setup
-        uses: hanseltimeindustries/pkgtest-setup-action@v1
-        # Run pkgtest with a directive to collect logs
-      - name: pkgtest
-        run: |
-          yarn pkgtest --collectLogFilesOn error --collectLogFilesStage setup --onWindowsProblems skip
-        # Collect any logs from the --collectLogFilesOn error to troubleshoot failures
-      - name: Archive logs on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pkgtest-log-files-${{ matrix.pkgManager }}-${{ matrix.os }}-${{ matrix.node-version }}
-          path: ${{ steps.pkgtest-setup.outputs.collet_log_file_folder }}
-          retention-days: 1
-          include-hidden-files: true
+          npm run bundle
 
-  no-committed-build:
+  no-committed-bundle:
     runs-on: ubuntu-latest
     if: ${{ github.base_ref }}
     steps:
@@ -117,22 +72,65 @@ jobs:
         uses: hanseltimeindustries/get-changed-files@v1
         with:
           format: 'space-delimited'
-          filter: "lib/**/*"
+          filter: "bundle/**/*"
 
-      - name: No committed lib
+      - name: No committed bundle
         if: ${{ steps.bundle-changed-files.outputs.all }}
         shell: bash
         run: |
-          echo "all files in lib/ directory are committed by the release process.  Please make sure not to commit your lib files!"
+          echo "all files in bundle/ directory are committed by the release process.  Please make sure not to commit your bundle files!"
           exit 1
-  # easy to require end cap job
-  done:
-    needs:
-      - no-committed-build
-      - ci-checks
-      - inttest
-    runs-on: ubuntu-latest
-    name: Done
-    steps:
-      - run: exit 1
-        if: ${{ always() && (contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled')) }}
+
+  # TODO: integration tests - write a set of commander based bin scripts that you can configure.
+  # The following is an example
+  # private-int-test:
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: write
+  #     pull-requests: write
+  #   steps:
+  #     # Create git client with PAT that has access to the private template
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.PRIVATE_TEMPLATE_TEST_PAT }}
+  #     - name: setup git
+  #       run: |
+  #         git config user.name github-actions
+  #         git config user.email github-actions@github.com
+  #     - name: install
+  #       run: |
+  #         npm ci
+  #     - name: bundle
+  #       run: |
+  #         npm run bundle
+  #     - name: sync-private-repo
+  #       id: test_run
+  #       uses: ./
+  #       with:
+  #         repoPath: HanseltimeIndustries/test-private-template
+  #         githubToken: ${{ secrets.GITHUB_TOKEN }}
+  #         remoteRepoToken: ${{ secrets.PRIVATE_TEMPLATE_TEST_PAT }}
+  #         templateBranch: main
+  #         commitMsg: "build(boilerplate): synchronize template repo"
+  #         branchPrefix: ${{ inputs.templatePrefix }}
+  #     - name: assert
+  #       run: |
+  #         npx ts-node src/test-utils/confirm-repo-template.ts \
+  #           --expectedPullNumber "${{ steps.test_run.outputs.prNumber }}" \
+  #           --expectedToBranch "main" \
+  #           --expectedFromBranch "main" \
+  #           --expectedFilesChanged "new_file.md" "package.json" "templatesync.json" "templatesync.local.json" \
+  #           --expectedFromRepoPath "HanseltimeIndustries/test-private-template" \
+  #           --expectedBranchPrefix "${{ inputs.templatePrefix }}"
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: clean
+  #       if: always()
+  #       run: |
+  #         npx ts-node src/test-utils/clear-int-test-resources.ts \
+  #           --expectedPullNumber "${{ steps.test_run.outputs.prNumber }}" \
+  #           --expectedFromBranch "main" \
+  #           --expectedFromRepoPath "HanseltimeIndustries/test-private-template" \
+  #           --expectedBranchPrefix "${{ inputs.templatePrefix }}"
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

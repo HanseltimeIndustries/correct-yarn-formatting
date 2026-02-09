@@ -22,20 +22,20 @@ module.exports = {
 		[
 			"@semantic-release/exec",
 			{
-				prepareCmd: "yarn build",
+				prepareCmd: "npm run bundle",
 			},
 		],
 		// format any changed files
 		[
 			"@semantic-release/exec",
 			{
-				prepareCmd: "yarn format --fix",
+				prepareCmd: "npm run format -- --fix",
 			},
 		],
 		[
 			"@semantic-release/git",
 			{
-				assets: ["CHANGELOG.md", "package.json", "lib/**"],
+				assets: ["CHANGELOG.md", "package.json", "bundle/**"],
 				message: `docs(release): ${abbreviatedName} $\{nextRelease.version} [skip ci]\n\n$\{nextRelease.notes}`,
 			},
 		],
