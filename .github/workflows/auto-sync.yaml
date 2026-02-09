@@ -12,21 +12,26 @@ jobs:
     runs-on: ubuntu-latest
     environment: auto-sync
     steps:
-      # Create git client with PAT that has access to the private template
-      - uses: actions/checkout@v4
+      - name: Generate token to read from template repo
+        id: generate_template_token
+        uses: actions/create-github-app-token@v2
         with:
-          token: ${{ secrets.SYNC_TOKEN }}
+          app-id: ${{ secrets.AUTO_SYNC_APP_ID }}
+          private-key: ${{ secrets.AUTO_SYNC_APP_PKEY }}
+          owner: ${{ github.repository_owner }} # Necessary since we're reaching out to not-this-repo
+      # Create git client with PAT that has access to the private template
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ steps.generate_template_token.outputs.token }}
       - name: setup git
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-      - name: install
-        run: |
-          npm ci
       - name: sync-repos
-        uses: hanseltimeindustries/template-repo-sync-action@v1.0.1
+        uses: hanseltimeindustries/template-repo-sync-action@v2
         with:
           repoPath: HanseltimeIndustries/github-actions-template
-          githubToken: ${{ secrets.SYNC_TOKEN }}
+          githubToken: ${{ steps.generate_template_token.outputs.token }}
+          remoteRepoToken: ${{ steps.generate_template_token.outputs.token }}
           templateBranch: main
           commitMsg: "build(boilerplate): synchronize template repo"
