@@ -1,12 +1,25 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": { "enabled": false, "clientKind": "git", "useIgnoreFile": false },
+	"vcs": {
+		"enabled": false,
+		"clientKind": "git",
+		"useIgnoreFile": false
+	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": ["dist/*", "lib/*", "esm-packages.json"]
+		"ignore": [
+			"dist/*",
+			"lib/*",
+			"esm-packages.json"
+		]
 	},
-	"formatter": { "enabled": true, "indentStyle": "tab" },
-	"organizeImports": { "enabled": true },
+	"formatter": {
+		"enabled": true,
+		"indentStyle": "tab"
+	},
+	"organizeImports": {
+		"enabled": true
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -69,9 +82,17 @@
 				"useValidTypeof": "error"
 			}
 		},
-		"ignore": [".yarn/**/*", "dist/**/*", "node_modules/**/*"]
+		"ignore": [
+			".yarn/**/*",
+			"dist/**/*",
+			"node_modules/**/*"
+		]
 	},
-	"javascript": { "formatter": { "quoteStyle": "double" } },
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double"
+		}
+	},
 	"overrides": [
 		{
 			"include": [
@@ -88,7 +109,10 @@
 			}
 		},
 		{
-			"include": ["*.spec.ts", "*.test.ts"],
+			"include": [
+				"*.spec.ts",
+				"*.test.ts"
+			],
 			"javascript": {
 				"globals": [
 					"afterEach",

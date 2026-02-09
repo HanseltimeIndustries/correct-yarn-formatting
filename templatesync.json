@@ -1,0 +1,15 @@
+{
+	"ignore": ["src/**/*", "README.md", "action.yml", "bundle/**/*"],
+	"merge": [
+		{
+			"glob": "**/*.json",
+			"plugin": "_json",
+			"options": {
+				"paths": [
+					["$.devDependencies", "merge-template"],
+					["$.scripts", "merge-template"]
+				]
+			}
+		}
+	]
+}

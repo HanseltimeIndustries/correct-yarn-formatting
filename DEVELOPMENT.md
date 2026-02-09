@@ -7,42 +7,26 @@ This document helps to detail tooling that you would want to be aware of if deve
 Install your dependencies:
 
 ```shell
-yarn install
+npm install
 ```
 
 Lint your project (we use [biome)](https://biomejs.dev/guides/getting-started/)):
 
 ```shell
-yarn lint -- --fix
+npm run lint -- --fix
 ```
 
 Format your project files (we use [biome](https://biomejs.dev/guides/getting-started/)):
 
 ```shell
-yarn format -- --fix
+npm run format -- --fix
 ```
 
 Build your typescript files to .js:
 
 ```shell
-yarn build
+npm run build
 ```
-
-## Testing locally
-
-The easiest way to test your changes is to install them in a new yarn project.
-
-You can do that simply by:
-
-```shell
-# Build your project
-yarn build
-
-# In a new yarn project add this to your .yarnrc.yml
-yarn plugin import <path to package>/lib/index.js
-```
-
-Now you can verify it's working as expected!
 
 ## Committing your changes
 
@@ -54,3 +38,10 @@ As a general rule of thumb:
 
 1. use `feat:` for minor version changes
 2. use `fix:` for patch version changes
+
+## Auto-syncing with the base template
+
+There is also an [auto-sync](./.github/workflows/auto-sync.yaml) workflow that we provide to give you the ability to automatically be kept up-to-date
+on any boilerplate changes. This will create PRs when there is a PR with new changes to the base repo so that you can see the diff and determine how
+to act. You can make use of the [templatesync.json](./templatesync.json) and [templatesync.local.json](./templatesync.local.json) files to change how
+files merge together. For more information please see the [template-repo-sync-action](https://github.com/HanseltimeIndustries/template-repo-sync-action).
